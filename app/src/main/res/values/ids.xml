@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="base_adapter_key_position" type="id"/>
+    <item name="adapter_item_tag_key" type="id"/>
+    <item name="image_id" type="id"/>
+</resources>
