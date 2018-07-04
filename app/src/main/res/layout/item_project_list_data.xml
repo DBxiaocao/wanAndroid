@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rlHomeItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:padding="10dp">
+
+    <android.support.v7.widget.AppCompatImageView
+        android:layout_width="110dp"
+        android:layout_height="140dp"
+        android:layout_marginRight="10dp"
+        android:id="@+id/ivProjectPic"
+        android:layout_marginEnd="10dp" />
+
+    <TextView
+        android:id="@+id/tvProjectTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:layout_toRightOf="@+id/ivProjectPic"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        tools:text="1111111111111111111111111111111111111111111111111111111111111111111111"
+        android:layout_toEndOf="@+id/ivProjectPic" />
+
+    <TextView
+        android:id="@+id/tvProjectDese"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="3"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/tvProjectTitle"
+        android:ellipsize="end"
+        android:layout_toRightOf="@+id/ivProjectPic"
+        android:textSize="16sp"
+        tools:text="1111111111111111111111111111111111111111111111111111111111111111111111"
+        android:layout_toEndOf="@+id/ivProjectPic" />
+    <TextView
+        android:id="@+id/tvProjectAuthor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="10dp"
+        android:layout_toLeftOf="@+id/tvProjectNiceDate"
+        android:paddingBottom="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="5dp"
+        android:textSize="14sp"
+        tools:text="name"
+        android:layout_marginEnd="10dp"
+        android:layout_toStartOf="@+id/tvProjectNiceDate" />
+
+    <TextView
+        android:id="@+id/tvProjectNiceDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:paddingBottom="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="5dp"
+        android:textSize="14sp"
+        tools:text="name" />
+</RelativeLayout>
+

@@ -44,36 +44,40 @@ class WebFragment : BaseFragment() {
     @SuppressLint("SetJavaScriptEnabled")
     private fun initView() {
         var settings: WebSettings = mWebView.settings
-        settings.javaScriptEnabled = true  //支持js
-        settings.useWideViewPort = true //将图片调整到适合webview的大小
-        settings.loadWithOverviewMode = true // 缩放至屏幕的大小
-        settings.cacheMode = WebSettings.LOAD_NO_CACHE  //关闭webview中缓存
-        settings.domStorageEnabled = true
-        mWebView.webChromeClient=object : WebChromeClient(){
-            override fun onProgressChanged(view: WebView?, newProgress: Int) {
-                super.onProgressChanged(view, newProgress)
-                Logger.e(newProgress.toString())
-            }
+        settings.run {
+            javaScriptEnabled = true//支持js
+            useWideViewPort = true//将图片调整到适合webview的大小
+            loadWithOverviewMode = true// 缩放至屏幕的大小
+            cacheMode = WebSettings.LOAD_NO_CACHE  //关闭webview中缓存
+            domStorageEnabled = true
+        }
+        mWebView.run {
+            webChromeClient = object : WebChromeClient() {
+                override fun onProgressChanged(view: WebView?, newProgress: Int) {
+                    super.onProgressChanged(view, newProgress)
+                    Logger.e(newProgress.toString())
+                }
 
-            override fun onReceivedTitle(view: WebView?, title: String?) {
-                super.onReceivedTitle(view, title)
-                if (title != null) {
-                    mActivity.setCenterTitle(title)
+                override fun onReceivedTitle(view: WebView?, title: String?) {
+                    super.onReceivedTitle(view, title)
+                    if (title != null) {
+                        mActivity.setCenterTitle(title)
+                    }
                 }
             }
-        }
-        mWebView.webViewClient = object : WebViewClient(){
-            override fun onPageFinished(view: WebView?, url: String?) {
-                super.onPageFinished(view, url)
-                Logger.d("加载结束")
-            }
+            webViewClient = object : WebViewClient() {
+                override fun onPageFinished(view: WebView?, url: String?) {
+                    super.onPageFinished(view, url)
+                    Logger.d("加载结束")
+                }
 
-            override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                super.onPageStarted(view, url, favicon)
-                Logger.d("加载开始")
+                override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+                    super.onPageStarted(view, url, favicon)
+                    Logger.d("加载开始")
+                }
             }
+            loadUrl(arguments.getString("url"))
         }
-        mWebView.loadUrl(arguments.getString("url"))
     }
 
 }

@@ -42,9 +42,4 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         mIvBack.setOnClickListener(this)
     }
 
-    private fun onCheckText(id: Int) {
-        login_view.setTextColor(resources.getColor(android.R.color.black))
-        register_view.setTextColor(resources.getColor(R.color.colorPrimary))
-    }
-
 }

@@ -38,10 +38,7 @@ class UserFragment : BaseFragment(), View.OnClickListener {
 
     companion object {
         fun newInstance(): UserFragment {
-            val args = Bundle()
-            val fragment = UserFragment()
-            fragment.arguments = args
-            return fragment
+            return UserFragment()
         }
     }
 

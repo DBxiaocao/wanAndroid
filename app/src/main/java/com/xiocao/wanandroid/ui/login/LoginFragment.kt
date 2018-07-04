@@ -1,15 +1,13 @@
 package com.xiocao.wanandroid.ui.login
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import com.google.gson.JsonElement
 import com.xiocao.wanandroid.R
-import com.xiocao.wanandroid.app.App
-import com.xiocao.wanandroid.base.BaseFragment
+import com.xiocao.wanandroid.base.ArchBaseFragment
 import com.xiocao.wanandroid.helper.UserHelper
-import com.xiocao.wanandroid.retrofit.rx.RxCallback
+import com.xiocao.wanandroid.retrofit.ErrorStatus
 import com.xiocao.wanandroid.utils.ToastUtils
 import kotlinx.android.synthetic.main.fragment_login.*
 
@@ -18,7 +16,15 @@ import kotlinx.android.synthetic.main.fragment_login.*
  * Date : 2018/3/14  15:37
  * Content : This is
  */
-class LoginFragment : BaseFragment() {
+class LoginFragment : ArchBaseFragment<LoginViewModel>() {
+    override fun getResLayout(): Int {
+        return R.layout.fragment_login
+    }
+
+    override fun initViewModel() {
+        mViewModel = ViewModelProviders.of(mActivity).get(LoginViewModel::class.java)
+        mViewModel.initRepository()
+    }
 
     companion object {
         fun newInstance(): LoginFragment {
@@ -29,36 +35,19 @@ class LoginFragment : BaseFragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.fragment_login, container, false)
-    }
-
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
         btnLogin.setOnClickListener {
-            if (mEditAccount.text==null){
-                ToastUtils.showShortToast(mActivity,"请输入账号")
-                return@setOnClickListener
-            }
-            if (mEditPassword.text==null){
-                ToastUtils.showShortToast(mActivity,"请输入密码")
-                return@setOnClickListener
-            }
-            doNetRequest(App.getApiService()
-                    .login(mEditAccount.text.toString(), mEditPassword.text.toString()), object : RxCallback<User> {
-                override fun onSuccess(model: User) {
-                    UserHelper.saveUser(model)
-                    UserHelper.saveUserId(model.id.toString())
+            mViewModel.login(mEditAccount.text.toString(), mEditPassword.text.toString()).observe(this, Observer<User> { user ->
+                if (user != null) {
+                    UserHelper.saveUser(user)
+                    UserHelper.saveUserId(user.id.toString())
                     mActivity.finish()
-                }
-
-                override fun onFailure(code: Int, msg: String) {
-                    ToastUtils.showShortToast(mActivity,msg)
                 }
             })
         }
+        mViewModel.getError().observe(this, Observer<ErrorStatus> { error -> ToastUtils.showShortToast(mActivity, error?.message.toString()) })
+
     }
 
 }

@@ -5,18 +5,23 @@
 
     <item
         android:id="@+id/navigation_home"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_home"
         android:title="首页"/>
 
     <item
+        android:id="@+id/navigation_project"
+        android:icon="@drawable/ic_cate"
+        android:title="项目"/>
+
+    <item
         android:id="@+id/navigation_category"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_cate"
         android:title="分类"/>
 
 
     <item
         android:id="@+id/navigation_personal"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_user"
         android:title="我的"/>
 
 </menu>

@@ -1,5 +1,7 @@
 package com.xiocao.wanandroid.ui.web
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -10,9 +12,16 @@ import com.xiocao.wanandroid.base.BaseActivity
 import com.xiocao.wanandroid.retrofit.rx.RxCallback
 import com.xiocao.wanandroid.utils.ToastUtils
 import android.content.Intent
+import com.xiocao.wanandroid.base.ArchBaseActivity
+import com.xiocao.wanandroid.retrofit.ErrorStatus
+import com.xiocao.wanandroid.ui.user.viewmodel.CollectionViewModel
 
 
-class WebActivity : BaseActivity() {
+class WebActivity : ArchBaseActivity<CollectionViewModel>() {
+    override fun initViewModel() {
+        mViewModel=ViewModelProviders.of(mActivity).get(CollectionViewModel::class.java)
+        mViewModel.initRepository()
+    }
 
     var isCollect: Boolean = false
 
@@ -71,31 +80,11 @@ class WebActivity : BaseActivity() {
 
 
     private fun addCollect() {
-        doNetRequest(App.getApiService().addCollect(intent.getIntExtra(KEY_WEB_ID, 0)), object : RxCallback<JsonElement> {
-            override fun onSuccess(model: JsonElement) {
-                ToastUtils.showShortToast(mActivity, "收藏成功")
-                isCollect = !isCollect
-                invalidateOptionsMenu()
-            }
-
-            override fun onFailure(code: Int, msg: String) {
-                ToastUtils.showShortToast(mActivity, msg)
-            }
-        })
+        mViewModel.addCollect(intent.getIntExtra(KEY_WEB_ID, 0)).observe(this, Observer<String>{ status-> ToastUtils.showShortToast(mActivity,status.toString()) })
     }
 
     private fun delCollect() {
-        doNetRequest(App.getApiService().delCollect(intent.getIntExtra(KEY_WEB_ID, 0)), object : RxCallback<JsonElement> {
-            override fun onSuccess(model: JsonElement) {
-                ToastUtils.showShortToast(mActivity, "取消收藏成功")
-                isCollect = !isCollect
-                invalidateOptionsMenu()
-            }
-
-            override fun onFailure(code: Int, msg: String) {
-                ToastUtils.showShortToast(mActivity, msg)
-            }
-        })
+        mViewModel.delCollect(intent.getIntExtra(KEY_WEB_ID, 0)).observe(this, Observer<String>{ status-> ToastUtils.showShortToast(mActivity,status.toString()) })
     }
 
 }

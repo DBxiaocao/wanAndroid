@@ -27,6 +27,7 @@
         android:background="@android:color/white"
         android:drawablePadding="10dp"
         android:hint="请输入密码"
+        android:inputType="textWebPassword"
         android:paddingLeft="10dp"
         android:textSize="14sp" />
 

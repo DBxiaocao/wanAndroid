@@ -59,7 +59,7 @@ class BannerPageAdapterHelper<T>(private val mPagerImageList: List<T>) : PagerAd
     }
 
 
-    fun setOnItemClickListener(l: OnItemClickListener) {
+    fun setOnItemClickListener(l: OnItemClickListener?) {
         mOnItemClickListener = l
     }
 

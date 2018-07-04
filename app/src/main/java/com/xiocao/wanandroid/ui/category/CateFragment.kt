@@ -24,6 +24,7 @@ import com.xiocao.wanandroid.ui.home.TypeActivity
 import com.xiocao.wanandroid.utils.ToastUtils
 import com.xiocao.wanandroid.view.DiverItemDecoration
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.item_cate_list.view.*
 
 /**
  * User : lijun
@@ -36,10 +37,7 @@ class CateFragment : BaseFragment() {
 
     companion object {
         fun newInstance(): CateFragment {
-            val args = Bundle()
-            val fragment = CateFragment()
-            fragment.arguments = args
-            return fragment
+            return CateFragment()
         }
     }
 
@@ -52,11 +50,26 @@ class CateFragment : BaseFragment() {
 
         listAdapter = SimpleRecyclerAdapter<Cate>(R.layout.item_cate_list)
                 .setOnBindViewListener { _, bean, view ->
-                    var viewHolder = ViewHolder(view)
-                    viewHolder.setModel(bean)
-                    viewHolder.onItemClick(View.OnClickListener {
-//                        startActivity(Intent(activity, CateInfoActivity::class.java))
-                    })
+                    view.tvCateGroupName.text = bean.name
+                    val childAdapter=SimpleRecyclerAdapter<Cate.ChildrenBean>(R.layout.item_cate_child_tag).setDataList(bean.children)
+                            .setOnBindViewListener { _, t, view ->
+                                val tvCateChildName: TextView = view as TextView
+                                tvCateChildName.run {
+                                    text=t.name
+                                    setOnClickListener {
+                                        val bundle = Bundle()
+                                        bundle.putInt(TypeActivity.KEY_CID, t.id)
+                                        bundle.putString(TypeActivity.KEY_CID_NAME, t.name)
+                                        startActivity(Intent(mActivity, TypeActivity::class.java).putExtras(bundle))
+                                    }
+                                }
+                            }
+                    view.mRvChild.run {
+                        val manager = FlexboxLayoutManager(mActivity)
+                        manager.flexWrap = FlexWrap.WRAP
+                        layoutManager=manager
+                        adapter=childAdapter
+                    }
                 }
         mRecyclerView.run {
             layoutManager=object : LinearLayoutManager(mActivity) {}
@@ -75,38 +88,5 @@ class CateFragment : BaseFragment() {
             }
         })
     }
-
-    internal class ViewHolder(view: View) {
-        private var tvGroupName: TextView = view.findViewById(R.id.tvCateGroupName)
-        var mRvChild: RecyclerView = view.findViewById(R.id.mRvChild)
-        var rlCateItem: RelativeLayout = view.findViewById(R.id.rlCateItem)
-        fun setModel(bean: Cate) {
-            tvGroupName.text = bean.name
-            val layoutManager = FlexboxLayoutManager(mRvChild.context)
-            layoutManager.flexWrap = FlexWrap.WRAP
-//            layoutManager.alignItems = AlignItems.STRETCH
-            mRvChild.layoutManager = layoutManager
-            var childAdapter=SimpleRecyclerAdapter<Cate.ChildrenBean>(R.layout.item_cate_child_tag).setDataList(bean.children)
-                    .setOnBindViewListener { _, t, view ->
-                        var tvCateChildName: TextView = view as TextView
-                        tvCateChildName.setOnClickListener {
-                            var bundle = Bundle()
-                            bundle.putInt(TypeActivity.KEY_CID, t.id)
-                            bundle.putString(TypeActivity.KEY_CID_NAME, t.name)
-                            mRvChild.context.startActivity(Intent(mRvChild.context, TypeActivity::class.java).putExtras(bundle))
-                        }
-                        if (t != null) {
-                            tvCateChildName.text=t.name
-                        }
-                    }
-            mRvChild.adapter=childAdapter
-        }
-
-        fun onItemClick(onClickListener: View.OnClickListener) {
-            rlCateItem.setOnClickListener(onClickListener)
-        }
-
-    }
-
 }
 
