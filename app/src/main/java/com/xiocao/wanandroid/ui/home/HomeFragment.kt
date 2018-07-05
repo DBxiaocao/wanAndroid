@@ -33,7 +33,7 @@ import kotlin.math.log
  * Date : 2018/3/13  11:15
  * Content : This is
  */
-class HomeFragment : ArchBaseFragment<HomeViewModel>(), OnRefreshListener, OnLoadmoreListener {
+class HomeFragment : ArchBaseFragment<HomeViewModel>() {
     override fun getResLayout(): Int {
         return R.layout.fragment_home
     }
@@ -43,51 +43,39 @@ class HomeFragment : ArchBaseFragment<HomeViewModel>(), OnRefreshListener, OnLoa
         mViewModel.initRepository()
     }
 
-    override fun onLoadmore(refreshlayout: RefreshLayout) {
-        getBanner()
-        getListData()
-    }
-
-    override fun onRefresh(refreshlayout: RefreshLayout) {
-        page = 0
-        getBanner()
-        getListData()
-    }
-
     private var page: Int = 0
-    private lateinit var listAdapter: SimpleRecyclerAdapter<HomeList.DatasBean>
+    private var listAdapter = SimpleRecyclerAdapter<HomeList.DatasBean>(R.layout.item_home_list_data)
 
     companion object {
         fun newInstance(): HomeFragment {
-            return  HomeFragment()
+            return HomeFragment()
         }
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mActivity.setCenterTitle("首页")
-        listAdapter = SimpleRecyclerAdapter<HomeList.DatasBean>(R.layout.item_home_list_data)
-                .setOnBindViewListener { _, bean, view ->
-                    view.tvDataTitle.text = bean.title
-                    view.tvAuthor.text = bean.author
-                    view.tvSuperChapterName.run {
-                        text = bean.superChapterName
-                        setOnClickListener {
-                            val bundle = Bundle()
-                            bundle.putInt(TypeActivity.KEY_CID, bean.chapterId)
-                            bundle.putString(TypeActivity.KEY_CID_NAME, bean.superChapterName)
-                            startActivity(Intent(mActivity, TypeActivity::class.java).putExtras(bundle))
-                        }
-                    }
-                    view.tvNiceDate.text = bean.niceDate
-                    view.setOnClickListener {
-                        val bundle = Bundle()
-                        bundle.putString(WebActivity.KEY_WEB_URL, bean.link)
-                        bundle.putInt(WebActivity.KEY_WEB_ID, bean.id)
-                        bundle.putBoolean(WebActivity.KEY_WEB_COLLECT, bean.isCollect)
-                        startActivity(Intent(mActivity, WebActivity::class.java).putExtras(bundle))
-                    }
+        listAdapter.setOnBindViewListener { _, bean, view ->
+            view.tvDataTitle.text = bean.title
+            view.tvAuthor.text = bean.author
+            view.tvSuperChapterName.run {
+                text = bean.superChapterName
+                setOnClickListener {
+                    val bundle = Bundle()
+                    bundle.putInt(TypeActivity.KEY_CID, bean.chapterId)
+                    bundle.putString(TypeActivity.KEY_CID_NAME, bean.superChapterName)
+                    startActivity(Intent(mActivity, TypeActivity::class.java).putExtras(bundle))
                 }
+            }
+            view.tvNiceDate.text = bean.niceDate
+            view.setOnClickListener {
+                val bundle = Bundle()
+                bundle.putString(WebActivity.KEY_WEB_URL, bean.link)
+                bundle.putInt(WebActivity.KEY_WEB_ID, bean.id)
+                bundle.putBoolean(WebActivity.KEY_WEB_COLLECT, bean.isCollect)
+                startActivity(Intent(mActivity, WebActivity::class.java).putExtras(bundle))
+            }
+        }
         mRecyclerView.run {
             layoutManager = object : LinearLayoutManager(mActivity) {}
             addItemDecoration(DiverItemDecoration(
@@ -95,9 +83,17 @@ class HomeFragment : ArchBaseFragment<HomeViewModel>(), OnRefreshListener, OnLoa
             adapter = listAdapter
             isNestedScrollingEnabled = false
         }
-        refreshLayout.setOnRefreshListener(this)
-        refreshLayout.setOnLoadmoreListener(this)
-        refreshLayout.autoRefresh()
+        refreshLayout.run {
+            setOnRefreshListener {
+                page = 0
+                getBanner()
+                getListData()
+            }
+            setOnLoadmoreListener {
+                getListData()
+            }
+            autoRefresh()
+        }
         mViewModel.getError().observe(this, Observer<ErrorStatus> { error ->
             refreshLayout.run {
                 finishLoadmore()
@@ -134,9 +130,9 @@ class HomeFragment : ArchBaseFragment<HomeViewModel>(), OnRefreshListener, OnLoa
     }
 
     private fun setModelBanner(bannerList: List<HomeBanner>) {
-        var bannerAdapter = BannerPageAdapterHelper(bannerList)
+        val bannerAdapter = BannerPageAdapterHelper(bannerList)
         bannerAdapter.run {
-            setOnItemClickListener(object :BannerPageAdapterHelper.OnItemClickListener{
+            setOnItemClickListener(object : BannerPageAdapterHelper.OnItemClickListener {
                 override fun onClick(view: View, position: Int) {
                     val bean = bannerList[mViewPager.currentItem]
                     val bundle = Bundle()

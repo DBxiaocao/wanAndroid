@@ -20,21 +20,13 @@ import com.xiocao.wanandroid.view.DiverItemDecoration
 import kotlinx.android.synthetic.main.include_recyclerview.*
 import kotlinx.android.synthetic.main.item_home_list_data.view.*
 
-class TypeActivity : ArchBaseActivity<TypeViewModel>(), OnRefreshListener, OnLoadmoreListener {
+class TypeActivity : ArchBaseActivity<TypeViewModel>(){
     override fun initViewModel() {
         mViewModel = ViewModelProviders.of(mActivity).get(TypeViewModel::class.java)
         mViewModel.initRepository()
     }
 
-    lateinit var listAdapter: SimpleRecyclerAdapter<TypeList.DatasBean>
-    override fun onRefresh(refreshlayout: RefreshLayout?) {
-        page = 0
-        queryData()
-    }
-
-    override fun onLoadmore(refreshlayout: RefreshLayout?) {
-        queryData()
-    }
+    private val listAdapter= SimpleRecyclerAdapter<TypeList.DatasBean>(R.layout.item_home_list_data)
 
     var page: Int = 0
 
@@ -48,11 +40,19 @@ class TypeActivity : ArchBaseActivity<TypeViewModel>(), OnRefreshListener, OnLoa
         setContentView(R.layout.activity_type)
         setEnabledNavigation(true)
         setCenterTitle(intent.getStringExtra(KEY_CID_NAME))
-        refreshLayout.setOnRefreshListener(this)
-        refreshLayout.setOnLoadmoreListener(this)
-        refreshLayout.autoRefresh()
-        listAdapter = SimpleRecyclerAdapter<TypeList.DatasBean>(R.layout.item_home_list_data)
-                .setOnBindViewListener { _, bean, view ->
+
+        refreshLayout.run {
+            setOnRefreshListener {
+                page = 0
+                queryData()
+            }
+            setOnLoadmoreListener {
+                queryData()
+            }
+            autoRefresh()
+        }
+
+        listAdapter.setOnBindViewListener { _, bean, view ->
                     view.tvDataTitle.text = bean.title
                     view.tvAuthor.text = bean.author
                     view.tvSuperChapterName.text = bean.superChapterName

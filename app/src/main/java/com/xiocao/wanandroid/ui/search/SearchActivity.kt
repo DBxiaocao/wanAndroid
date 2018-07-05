@@ -38,23 +38,15 @@ import kotlinx.android.synthetic.main.include_recyclerview.*
 import kotlinx.android.synthetic.main.item_home_list_data.view.*
 import kotlinx.android.synthetic.main.toolbar_search_layout.*
 
-class SearchActivity : ArchBaseActivity<SearchViewModel>(), OnRefreshListener, OnLoadmoreListener {
+class SearchActivity : ArchBaseActivity<SearchViewModel>(){
     override fun initViewModel() {
         mViewModel = ViewModelProviders.of(mActivity).get(SearchViewModel::class.java)
         mViewModel.initRepository()
     }
 
     private var page: Int = 0
-    lateinit var listAdapter: SimpleRecyclerAdapter<TypeList.DatasBean>
-    lateinit var hotKeyAdapter: SimpleRecyclerAdapter<HotSearch>
-    override fun onRefresh(refreshlayout: RefreshLayout?) {
-        page = 0
-        queryKey()
-    }
-
-    override fun onLoadmore(refreshlayout: RefreshLayout?) {
-        queryKey()
-    }
+    private val listAdapter= SimpleRecyclerAdapter<TypeList.DatasBean>(R.layout.item_home_list_data)
+    private val hotKeyAdapter= SimpleRecyclerAdapter<HotSearch>(R.layout.item_cate_child_tag)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,10 +56,14 @@ class SearchActivity : ArchBaseActivity<SearchViewModel>(), OnRefreshListener, O
     }
 
     private fun initView() {
-        refreshLayout.setOnRefreshListener(this)
-        refreshLayout.setOnLoadmoreListener(this)
-        listAdapter = SimpleRecyclerAdapter<TypeList.DatasBean>(R.layout.item_home_list_data)
-                .setOnBindViewListener { _, bean, view ->
+        refreshLayout.run {
+            setOnLoadmoreListener { queryKey() }
+            setOnRefreshListener {
+                page=0
+                queryKey()
+            }
+        }
+        listAdapter.setOnBindViewListener { _, bean, view ->
                     view.tvDataTitle.text = bean.title
                     view.tvAuthor.text = bean.author
                     view.tvSuperChapterName.run {
@@ -101,7 +97,7 @@ class SearchActivity : ArchBaseActivity<SearchViewModel>(), OnRefreshListener, O
             adapter = listAdapter
         }
 
-        hotKeyAdapter = SimpleRecyclerAdapter<HotSearch>(R.layout.item_cate_child_tag)
+        hotKeyAdapter
                 .setOnBindViewListener { _, t, view ->
                     val tvCateChildName: TextView = view as TextView
                     tvCateChildName.run {
@@ -132,9 +128,7 @@ class SearchActivity : ArchBaseActivity<SearchViewModel>(), OnRefreshListener, O
         params.gravity = Gravity.LEFT
         val view = View.inflate(mActivity, R.layout.toolbar_search_layout, null)
         getToolBar().addView(view, params)
-        mIvBack.setOnClickListener {
-            onBackPressed()
-        }
+        mIvBack.setOnClickListener { onBackPressed() }
         mEditSearch.run {
             setOnEditorActionListener { _, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
@@ -167,14 +161,18 @@ class SearchActivity : ArchBaseActivity<SearchViewModel>(), OnRefreshListener, O
         mViewModel.getSearchList(page, mEditSearch.text.toString()).observe(this, Observer<TypeList> { model ->
             hotRvKey.visibility=View.GONE
             mRecyclerView.visibility=View.VISIBLE
-            refreshLayout.finishRefresh()
-            refreshLayout.finishLoadmore()
-            if (page == 0)
-                listAdapter.setDataList(model?.datas)
-            else
-                listAdapter.addDataList(model?.datas)
-            page = model!!.curPage
-            listAdapter.notifyDataSetChanged()
+            refreshLayout.run {
+                finishRefresh()
+                finishLoadmore()
+            }
+            if (model!=null){
+                if (page == 0)
+                    listAdapter.setDataList(model.datas)
+                else
+                    listAdapter.addDataList(model.datas)
+                page = model.curPage
+                listAdapter.notifyDataSetChanged()
+            }
         })
     }
 }
