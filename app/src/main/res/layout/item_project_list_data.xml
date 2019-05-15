@@ -8,7 +8,7 @@
     android:background="@android:color/white"
     android:padding="10dp">
 
-    <android.support.v7.widget.AppCompatImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="110dp"
         android:layout_height="140dp"
         android:layout_marginRight="10dp"

@@ -1,6 +1,5 @@
 package com.xiocao.wanandroid.retrofit
 
-import com.orhanobut.logger.Logger
 
 import java.io.IOException
 import java.nio.charset.Charset
@@ -16,6 +15,7 @@ import okhttp3.ResponseBody
 import okhttp3.internal.http.HttpHeaders
 import okio.Buffer
 import okio.BufferedSource
+import timber.log.Timber
 
 /**
  * User : lijun
@@ -44,7 +44,7 @@ class LogInterceptor : Interceptor {
             }
             body = buffer.readString(charset!!)
         }
-        Logger.e("=================发送请求==============\nMethod：" + request.method() + "\nUrl："
+        Timber.e("=================发送请求==============\nMethod：" + request.method() + "\nUrl："
                 + request.url() + "\nHeaders：" + request.headers() + "\nBody：" + body)
 
         val startNs = System.nanoTime()
@@ -72,9 +72,9 @@ class LogInterceptor : Interceptor {
             rBody = buffer.clone().readString(charset!!)
         }
 
-        Logger.e("=================收到响应==============" + response.code() + "  " + response.message()
+        Timber.e("=================收到响应==============" + response.code() + "  " + response.message()
                 + "  " + tookMs + "ms\n请求Url：" + response.request().url() + "\n请求body：" + body)
-        Logger.json(rBody)
+        Timber.i(rBody)
         return response
     }
 }

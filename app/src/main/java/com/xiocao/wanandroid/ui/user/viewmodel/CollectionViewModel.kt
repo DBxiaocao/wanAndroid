@@ -1,6 +1,6 @@
 package com.xiocao.wanandroid.ui.user.viewmodel
 
-import android.arch.lifecycle.LiveData
+import androidx.lifecycle.LiveData
 import com.google.gson.JsonElement
 import com.xiocao.wanandroid.base.BaseViewModel
 import com.xiocao.wanandroid.ui.home.TypeList

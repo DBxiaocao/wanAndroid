@@ -3,13 +3,13 @@ package com.xiocao.wanandroid.view
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Rect
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 
 
 open class DiverItemDecoration @JvmOverloads constructor(// 布局方向
-        private var orientation: Int = VERTICAL) : RecyclerView.ItemDecoration() {
+        private var orientation: Int = VERTICAL) : androidx.recyclerview.widget.RecyclerView.ItemDecoration() {
 
     // 画笔
     private val paint: Paint = Paint()
@@ -28,7 +28,7 @@ open class DiverItemDecoration @JvmOverloads constructor(// 布局方向
         setSize(lineSize)
     }
 
-    override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State?) {
+    override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         super.onDrawOver(c, parent, state)
         if (orientation == VERTICAL) {
             drawHorizontal(c, parent)
@@ -61,14 +61,14 @@ open class DiverItemDecoration @JvmOverloads constructor(// 布局方向
     }
 
     // 绘制垂直分割线
-    protected fun drawVertical(c: Canvas, parent: RecyclerView) {
+    protected fun drawVertical(c: Canvas, parent: androidx.recyclerview.widget.RecyclerView) {
         val top = parent.paddingTop
         val bottom = parent.height - parent.paddingBottom
 
         val childCount = parent.childCount
         for (i in 0 until childCount) {
             val child = parent.getChildAt(i)
-            val params = child.layoutParams as RecyclerView.LayoutParams
+            val params = child.layoutParams as androidx.recyclerview.widget.RecyclerView.LayoutParams
             val left = child.right + params.rightMargin
             val right = left + size
 
@@ -77,14 +77,14 @@ open class DiverItemDecoration @JvmOverloads constructor(// 布局方向
     }
 
     // 绘制水平分割线
-    protected fun drawHorizontal(c: Canvas, parent: RecyclerView) {
+    protected fun drawHorizontal(c: Canvas, parent: androidx.recyclerview.widget.RecyclerView) {
         val left = parent.paddingLeft
         val right = parent.width - parent.paddingRight
 
         val childCount = parent.childCount
         for (i in 0 until childCount) {
             val child = parent.getChildAt(i)
-            val params = child.layoutParams as RecyclerView.LayoutParams
+            val params = child.layoutParams as androidx.recyclerview.widget.RecyclerView.LayoutParams
             val top = child.bottom + params.bottomMargin
             val bottom = top + size
 
@@ -92,17 +92,13 @@ open class DiverItemDecoration @JvmOverloads constructor(// 布局方向
         }
     }
 
-    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State?) {
+
+    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
         super.getItemOffsets(outRect, view, parent, state)
         if (orientation == VERTICAL) {
             outRect.set(0, 0, 0, size)
         } else {
             outRect.set(0, 0, size, 0)
-            //            if (parent.getChildAdapterPosition(view) % 2 == 1) {
-            //                outRect.set(size / 2, 0, 0, 0);
-            //            } else {
-            //                outRect.set(0, 0, size / 2, 0);
-            //            }
         }
     }
 
@@ -110,11 +106,11 @@ open class DiverItemDecoration @JvmOverloads constructor(// 布局方向
         /**
          * 水平方向
          */
-        val HORIZONTAL = LinearLayoutManager.HORIZONTAL
+        val HORIZONTAL = androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 
         /**
          * 垂直方向
          */
-        val VERTICAL = LinearLayoutManager.VERTICAL
+        val VERTICAL = androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
     }
 }

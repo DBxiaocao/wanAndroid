@@ -1,13 +1,12 @@
 package com.xiocao.wanandroid.ui.home
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.LinearLayoutManager
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.scwang.smartrefresh.layout.api.RefreshLayout
-import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener
 import com.xiocao.wanandroid.R
 import com.xiocao.wanandroid.base.ArchBaseActivity
@@ -46,7 +45,7 @@ class TypeActivity : ArchBaseActivity<TypeViewModel>(){
                 page = 0
                 queryData()
             }
-            setOnLoadmoreListener {
+            setOnLoadMoreListener {
                 queryData()
             }
             autoRefresh()
@@ -64,7 +63,7 @@ class TypeActivity : ArchBaseActivity<TypeViewModel>(){
                     }
                 }
         mRecyclerView.run {
-            layoutManager = object : LinearLayoutManager(mActivity) {}
+            layoutManager = object : androidx.recyclerview.widget.LinearLayoutManager(mActivity) {}
             addItemDecoration(DiverItemDecoration(
                     ContextCompat.getColor(mActivity, R.color.colorBg), 15))
             adapter = listAdapter
@@ -79,10 +78,10 @@ class TypeActivity : ArchBaseActivity<TypeViewModel>(){
     private fun queryData() {
         mViewModel.getTypes(page, intent.getIntExtra(KEY_CID, 0)).observe(this, Observer<TypeList> { model ->
             if (model!!.over)
-                refreshLayout.finishLoadmoreWithNoMoreData()
+                refreshLayout.finishLoadMoreWithNoMoreData()
             else
                 refreshLayout.resetNoMoreData()
-            refreshLayout.finishLoadmore()
+            refreshLayout.finishLoadMore()
             if (model.datas.isNotEmpty()) {
                 if (page == 0) {
                     refreshLayout.finishRefresh()

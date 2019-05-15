@@ -12,12 +12,13 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:id="@+id/frame_content"/>
-    <android.support.design.widget.BottomNavigationView
+    <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         app:elevation="2dp"
+        app:labelVisibilityMode="labeled"
         android:background="?android:attr/windowBackground"
         app:menu="@menu/navigation"/>
 </LinearLayout>

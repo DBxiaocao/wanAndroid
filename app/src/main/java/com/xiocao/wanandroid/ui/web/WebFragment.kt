@@ -3,7 +3,7 @@ package com.xiocao.wanandroid.ui.web
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +11,6 @@ import android.webkit.WebChromeClient
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import com.orhanobut.logger.Logger
 import com.xiocao.wanandroid.R
 import com.xiocao.wanandroid.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_webview.*
@@ -32,11 +31,11 @@ class WebFragment : BaseFragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.fragment_webview, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_webview, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
     }
@@ -55,7 +54,6 @@ class WebFragment : BaseFragment() {
             webChromeClient = object : WebChromeClient() {
                 override fun onProgressChanged(view: WebView?, newProgress: Int) {
                     super.onProgressChanged(view, newProgress)
-                    Logger.e(newProgress.toString())
                 }
 
                 override fun onReceivedTitle(view: WebView?, title: String?) {
@@ -68,15 +66,13 @@ class WebFragment : BaseFragment() {
             webViewClient = object : WebViewClient() {
                 override fun onPageFinished(view: WebView?, url: String?) {
                     super.onPageFinished(view, url)
-                    Logger.d("加载结束")
                 }
 
                 override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
                     super.onPageStarted(view, url, favicon)
-                    Logger.d("加载开始")
                 }
             }
-            loadUrl(arguments.getString("url"))
+            loadUrl(arguments!!.getString("url"))
         }
     }
 

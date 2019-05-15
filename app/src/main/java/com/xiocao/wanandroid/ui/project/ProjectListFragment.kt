@@ -1,12 +1,12 @@
 package com.xiocao.wanandroid.ui.project
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.View
 import com.xiocao.wanandroid.R
 import com.xiocao.wanandroid.base.ArchBaseFragment
@@ -46,20 +46,20 @@ class ProjectListFragment : ArchBaseFragment<ProjectViewModel>() {
         return R.layout.include_recyclerview
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         refreshLayout.run {
             setOnRefreshListener {
                 page = 1
                 queryProject()
             }
-            setOnLoadmoreListener {
+            setOnLoadMoreListener {
                 queryProject()
             }
             refreshLayout.autoRefresh()
         }
         mRecyclerView.run {
-            layoutManager = LinearLayoutManager(mActivity)
+            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(mActivity)
             addItemDecoration(DiverItemDecoration(
                     ContextCompat.getColor(mActivity, R.color.colorBg), 15))
             adapter = listAdapter
@@ -85,10 +85,10 @@ class ProjectListFragment : ArchBaseFragment<ProjectViewModel>() {
     }
 
     fun queryProject() {
-        mViewModel.getList(page, arguments.getInt(KEY_CATE_ID, 0)).observe(this, Observer { data ->
+        mViewModel.getList(page, arguments!!.getInt(KEY_CATE_ID, 0)).observe(this, Observer { data ->
             refreshLayout.run {
                 finishRefresh()
-                finishLoadmore()
+                finishLoadMore()
             }
             if (data != null) {
                 if (page == 1)
@@ -100,7 +100,7 @@ class ProjectListFragment : ArchBaseFragment<ProjectViewModel>() {
                     refreshLayout.resetNoMoreData()
                 } else {
                     page = data.pageCount
-                    refreshLayout.finishLoadmoreWithNoMoreData()
+                    refreshLayout.finishLoadMoreWithNoMoreData()
                 }
                 listAdapter.notifyDataSetChanged()
             }

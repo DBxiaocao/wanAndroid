@@ -1,13 +1,13 @@
 package com.xiocao.wanandroid.ui.home
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.support.annotation.RequiresApi
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.LinearLayoutManager
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.View
 import android.widget.ImageView
 import com.xiocao.wanandroid.R
@@ -17,9 +17,6 @@ import com.xiocao.wanandroid.utils.ImageUtils
 import com.xiocao.wanandroid.utils.ToastUtils
 import kotlinx.android.synthetic.main.fragment_home.*
 import com.xiocao.wanandroid.view.DiverItemDecoration
-import com.scwang.smartrefresh.layout.api.RefreshLayout
-import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener
 import com.xiocao.wanandroid.base.ArchBaseFragment
 import com.xiocao.wanandroid.retrofit.ErrorStatus
 import com.xiocao.wanandroid.ui.home.viewmodel.HomeViewModel
@@ -52,7 +49,7 @@ class HomeFragment : ArchBaseFragment<HomeViewModel>() {
         }
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mActivity.setCenterTitle("首页")
         listAdapter.setOnBindViewListener { _, bean, view ->
@@ -77,7 +74,7 @@ class HomeFragment : ArchBaseFragment<HomeViewModel>() {
             }
         }
         mRecyclerView.run {
-            layoutManager = object : LinearLayoutManager(mActivity) {}
+            layoutManager = object : androidx.recyclerview.widget.LinearLayoutManager(mActivity) {}
             addItemDecoration(DiverItemDecoration(
                     ContextCompat.getColor(mActivity, R.color.colorBg), 15))
             adapter = listAdapter
@@ -89,14 +86,14 @@ class HomeFragment : ArchBaseFragment<HomeViewModel>() {
                 getBanner()
                 getListData()
             }
-            setOnLoadmoreListener {
+            setOnLoadMoreListener {
                 getListData()
             }
             autoRefresh()
         }
         mViewModel.getError().observe(this, Observer<ErrorStatus> { error ->
             refreshLayout.run {
-                finishLoadmore()
+                finishLoadMore()
                 finishRefresh()
             }
             if (error != null) {
@@ -117,7 +114,7 @@ class HomeFragment : ArchBaseFragment<HomeViewModel>() {
     private fun getListData() {
         mViewModel.getList(page).observe(this, Observer<HomeList> { data ->
             refreshLayout.finishRefresh()
-            refreshLayout.finishLoadmore()
+            refreshLayout.finishRefresh()
             if (data != null) {
                 if (page == 0)
                     listAdapter.setDataList(data.datas)

@@ -1,6 +1,6 @@
 package com.xiocao.wanandroid.ui.home.viewmodel
 
-import android.arch.lifecycle.LiveData
+import androidx.lifecycle.LiveData
 import com.xiocao.wanandroid.base.BaseViewModel
 import com.xiocao.wanandroid.ui.home.HomeBanner
 import com.xiocao.wanandroid.ui.home.HomeList

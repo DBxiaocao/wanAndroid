@@ -1,6 +1,6 @@
 package com.xiocao.wanandroid.base
 
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 import com.xiocao.wanandroid.retrofit.ErrorStatus
 
 /**

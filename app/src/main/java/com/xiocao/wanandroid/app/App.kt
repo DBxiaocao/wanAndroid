@@ -3,12 +3,12 @@ package com.xiocao.wanandroid.app
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
+import com.squareup.leakcanary.LeakCanary
+import com.xiocao.wanandroid.BuildConfig
 
-import com.orhanobut.logger.AndroidLogAdapter
-import com.orhanobut.logger.BuildConfig
-import com.orhanobut.logger.Logger
 import com.xiocao.wanandroid.retrofit.rx.RxRetrofitCaller
 import com.xiocao.wanandroid.retrofit.tools.Preference
+import timber.log.Timber
 
 /**
  * User : lijun
@@ -19,12 +19,14 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            return
+        }
+        LeakCanary.install(this)
         mContext = applicationContext
-        Logger.addLogAdapter(object : AndroidLogAdapter() {
-            override fun isLoggable(priority: Int, tag: String?): Boolean {
-                return true
-            }
-        })
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
         Preference.setContext(applicationContext)
     }
 

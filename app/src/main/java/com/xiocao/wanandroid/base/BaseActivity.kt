@@ -1,13 +1,16 @@
 package com.xiocao.wanandroid.base
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
-import android.support.v7.widget.Toolbar
+import androidx.appcompat.widget.Toolbar
 import android.view.LayoutInflater
 import android.view.View
-import com.trello.rxlifecycle2.components.support.RxAppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
+import com.uber.autodispose.AutoDispose
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import com.xiocao.wanandroid.R
 import kotlinx.android.synthetic.main.base_activity.*
 import com.xiocao.wanandroid.retrofit.rx.RxRetrofitCaller
@@ -22,7 +25,7 @@ import io.reactivex.Observable
  * Date : 2018/3/12  15:24
  * Content : This is
  */
-open class BaseActivity : RxAppCompatActivity() {
+open class BaseActivity : AppCompatActivity() {
 
     lateinit var mActivity: BaseActivity
 
@@ -83,8 +86,10 @@ open class BaseActivity : RxAppCompatActivity() {
         return mToolBar
     }
 
+    @SuppressLint("CheckResult")
     fun <T> doNetRequest(ob: Observable<HttpResult<T>>,
                          callback: RxCallback<T>) {
+        ob.`as`( AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(this)))
         val rb = RxRetrofitCaller.Builder<T>()
         rb.setObservable(ob)
         rb.setRxRetrofitCallback(callback).subscription()

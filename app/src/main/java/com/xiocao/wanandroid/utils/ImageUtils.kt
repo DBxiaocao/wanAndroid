@@ -21,7 +21,7 @@ object ImageUtils {
     fun displayDefault(context: Context, url: String, imageView: ImageView) {
         Glide.with(context)
                 .load(url)
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .into(imageView)
     }
 

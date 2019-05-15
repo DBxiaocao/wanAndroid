@@ -1,12 +1,15 @@
 package com.xiocao.wanandroid.base
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.trello.rxlifecycle2.components.support.RxFragment
+import androidx.fragment.app.Fragment
+import com.uber.autodispose.AutoDispose
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import com.xiocao.wanandroid.retrofit.bean.HttpResult
 import com.xiocao.wanandroid.retrofit.rx.RxCallback
 import com.xiocao.wanandroid.retrofit.rx.RxRetrofitCaller
@@ -17,7 +20,7 @@ import io.reactivex.Observable
  * Date : 2018/3/12  16:04
  * Content : This is
  */
-open class BaseFragment : RxFragment() {
+open class BaseFragment : Fragment() {
 
     protected lateinit var mActivity: BaseActivity
 
@@ -26,11 +29,11 @@ open class BaseFragment : RxFragment() {
         mActivity = context as BaseActivity
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
     }
 
@@ -39,8 +42,10 @@ open class BaseFragment : RxFragment() {
     }
 
 
+    @SuppressLint("CheckResult")
     fun <T> doNetRequest(ob: Observable<HttpResult<T>>,
                          callback: RxCallback<T>) {
+        ob.`as`( AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(this)))
         val rb = RxRetrofitCaller.Builder<T>()
         rb.setObservable(ob)
         rb.setRxRetrofitCallback(callback).subscription()

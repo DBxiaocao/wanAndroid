@@ -1,26 +1,26 @@
 package com.xiocao.wanandroid.helper
 
 import android.content.Context
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 
-class FragmentHelper(private val mContext: Context, private val mFragmentManager: FragmentManager, private val mFrameRes: Int) {
+class FragmentHelper(private val mContext: Context, private val mFragmentManager: androidx.fragment.app.FragmentManager, private val mFrameRes: Int) {
     private val mFragmentItems = mutableMapOf<String, FragmentInfo>()
     private var mShowingInfo: FragmentInfo? = null
 
     class FragmentInfo {
         var tag: String? = null
             private set
-        var fragment: Fragment? = null
+        var fragment: androidx.fragment.app.Fragment? = null
             private set
         internal var isAdd: Boolean = false
 
-        constructor(fragment: Fragment) {
+        constructor(fragment: androidx.fragment.app.Fragment) {
             tag = fragment.javaClass.simpleName
             this.fragment = fragment
         }
 
-        constructor(tag: String, fragment: Fragment) {
+        constructor(tag: String, fragment: androidx.fragment.app.Fragment) {
             this.tag = tag
             this.fragment = fragment
         }
@@ -76,7 +76,7 @@ class FragmentHelper(private val mContext: Context, private val mFragmentManager
             if (mShowingInfo != null) {
                 // Detach showing fragment
                 if (mShowingInfo!!.fragment != null) {
-                    trans.hide(mShowingInfo!!.fragment)
+                    trans.hide(mShowingInfo!!.fragment!!)
                 }
             }
             mShowingInfo = info
@@ -84,9 +84,9 @@ class FragmentHelper(private val mContext: Context, private val mFragmentManager
                 // Attach init fragment
                 if (!mShowingInfo!!.isAdd) {
                     mShowingInfo!!.isAdd = true
-                    trans.add(mFrameRes, mShowingInfo!!.fragment, mShowingInfo!!.tag)
+                    trans.add(mFrameRes, mShowingInfo!!.fragment!!, mShowingInfo!!.tag)
                 } else {
-                    trans.show(mShowingInfo!!.fragment)
+                    trans.show(mShowingInfo!!.fragment!!)
                 }
             }
         }

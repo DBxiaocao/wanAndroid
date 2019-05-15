@@ -3,10 +3,10 @@ package com.xiocao.wanandroid.ui.category
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,11 +41,11 @@ class CateFragment : BaseFragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater?.inflate(R.layout.fragment_cate, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         listAdapter = SimpleRecyclerAdapter<Cate>(R.layout.item_cate_list)
@@ -72,7 +72,7 @@ class CateFragment : BaseFragment() {
                     }
                 }
         mRecyclerView.run {
-            layoutManager=object : LinearLayoutManager(mActivity) {}
+            layoutManager=object : androidx.recyclerview.widget.LinearLayoutManager(mActivity) {}
             addItemDecoration(DiverItemDecoration(
                     ContextCompat.getColor(mActivity, R.color.colorBg), 15))
             adapter = listAdapter

@@ -1,7 +1,7 @@
 package com.xiocao.wanandroid.ui.category
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import com.xiocao.wanandroid.R
 import com.xiocao.wanandroid.base.BaseActivity
 import com.xiocao.wanandroid.base.FragmentPagerAdapter
@@ -13,7 +13,7 @@ class CateInfoActivity : BaseActivity() {
     }
 
     private lateinit var mFragmentPagerAdapter: FragmentPagerAdapter
-    private var fragments = mutableListOf<Fragment>()
+    private var fragments = mutableListOf<androidx.fragment.app.Fragment>()
     private var tabTitleList = mutableListOf<String>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

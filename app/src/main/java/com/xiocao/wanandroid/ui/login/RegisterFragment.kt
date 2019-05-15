@@ -1,7 +1,7 @@
 package com.xiocao.wanandroid.ui.login
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.View
 import com.xiocao.wanandroid.R
@@ -36,7 +36,7 @@ class RegisterFragment : ArchBaseFragment<LoginViewModel>() {
     }
 
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         btnLogin.setOnClickListener {

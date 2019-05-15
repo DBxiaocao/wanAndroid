@@ -1,12 +1,12 @@
 package com.xiocao.wanandroid.ui.search
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.Toolbar
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.appcompat.widget.Toolbar
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
@@ -19,7 +19,6 @@ import android.widget.TextView
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.scwang.smartrefresh.layout.api.RefreshLayout
-import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener
 import com.xiocao.wanandroid.R
 import com.xiocao.wanandroid.app.App
@@ -57,7 +56,7 @@ class SearchActivity : ArchBaseActivity<SearchViewModel>(){
 
     private fun initView() {
         refreshLayout.run {
-            setOnLoadmoreListener { queryKey() }
+            setOnLoadMoreListener { queryKey() }
             setOnRefreshListener {
                 page=0
                 queryKey()
@@ -91,7 +90,7 @@ class SearchActivity : ArchBaseActivity<SearchViewModel>(){
                     }
                 }
         mRecyclerView.run {
-            layoutManager = object : LinearLayoutManager(mActivity) {}
+            layoutManager = object : androidx.recyclerview.widget.LinearLayoutManager(mActivity) {}
             addItemDecoration(DiverItemDecoration(
                     ContextCompat.getColor(mActivity, R.color.colorBg), 15))
             adapter = listAdapter
@@ -163,7 +162,7 @@ class SearchActivity : ArchBaseActivity<SearchViewModel>(){
             mRecyclerView.visibility=View.VISIBLE
             refreshLayout.run {
                 finishRefresh()
-                finishLoadmore()
+                finishLoadMore()
             }
             if (model!=null){
                 if (page == 0)

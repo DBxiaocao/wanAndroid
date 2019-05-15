@@ -1,7 +1,7 @@
 package com.xiocao.wanandroid.ui.home.viewmodel
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.xiocao.wanandroid.app.App
 import com.xiocao.wanandroid.base.BaseRepository
 import com.xiocao.wanandroid.retrofit.ErrorStatus

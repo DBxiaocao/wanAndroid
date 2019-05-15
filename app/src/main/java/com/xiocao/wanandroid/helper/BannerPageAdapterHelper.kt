@@ -1,6 +1,6 @@
 package com.xiocao.wanandroid.helper
 
-import android.support.v4.view.PagerAdapter
+import androidx.viewpager.widget.PagerAdapter
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -8,7 +8,7 @@ import android.widget.ImageView
 /**
  * 广告图片适配器
  */
-class BannerPageAdapterHelper<T>(private val mPagerImageList: List<T>) : PagerAdapter() {
+class BannerPageAdapterHelper<T>(private val mPagerImageList: List<T>) : androidx.viewpager.widget.PagerAdapter() {
     private val mSize: Int = mPagerImageList.size
 
     private var mOnItemClickListener: OnItemClickListener? = null

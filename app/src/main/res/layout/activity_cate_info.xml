@@ -8,7 +8,7 @@
     android:orientation="vertical"
     tools:context="com.xiocao.wanandroid.ui.category.CateInfoActivity">
 
-    <android.support.design.widget.TabLayout
+    <com.google.android.material.tabs.TabLayout
         android:id="@+id/mTabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,7 +19,7 @@
         app:tabTextAppearance="?attr/tabTextColor"
         app:tabTextColor="?attr/colorAccent" />
 
-    <android.support.v4.view.ViewPager
+    <androidx.viewpager.widget.ViewPager
         android:id="@+id/mVIewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

@@ -3,9 +3,9 @@ package com.xiocao.wanandroid.ui
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.internal.BottomNavigationItemView
-import android.support.design.internal.BottomNavigationMenuView
-import android.support.design.widget.BottomNavigationView
+import com.google.android.material.bottomnavigation.BottomNavigationItemView
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import android.view.Menu
 import android.view.MenuItem
 import com.xiocao.wanandroid.R
@@ -35,7 +35,6 @@ class MainActivity : BaseActivity() {
     }
 
     private fun initView() {
-        disableShiftMode(navigation)
         mFragmentHelper = FragmentHelper(this, supportFragmentManager, R.id.frame_content)
         mFragmentHelper.addFragmentItem(FragmentHelper.FragmentInfo(HomeFragment.newInstance()))
         mFragmentHelper.addFragmentItem(FragmentHelper.FragmentInfo(ProjectFragment()))
@@ -94,28 +93,5 @@ class MainActivity : BaseActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    @SuppressLint("RestrictedApi")
-    private fun disableShiftMode(navigationView: BottomNavigationView) {
-
-        val menuView = navigationView.getChildAt(0) as BottomNavigationMenuView
-        try {
-            val shiftingMode = menuView.javaClass.getDeclaredField("mShiftingMode")
-            shiftingMode.isAccessible = true
-            shiftingMode.setBoolean(menuView, false)
-            shiftingMode.isAccessible = false
-
-            for (i in 0 until menuView.childCount) {
-                val itemView = menuView.getChildAt(i) as BottomNavigationItemView
-                itemView.setShiftingMode(false)
-                itemView.setChecked(itemView.itemData.isChecked)
-            }
-        } catch (e: NoSuchFieldException) {
-            e.printStackTrace()
-        } catch (e: IllegalAccessException) {
-            e.printStackTrace()
-        }
-
     }
 }

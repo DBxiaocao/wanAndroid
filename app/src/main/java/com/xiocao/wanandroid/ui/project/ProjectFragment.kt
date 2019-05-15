@@ -1,10 +1,10 @@
 package com.xiocao.wanandroid.ui.project
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.view.ViewPager
+import androidx.fragment.app.Fragment
+import androidx.viewpager.widget.ViewPager
 import android.view.View
 import com.xiocao.wanandroid.R
 import com.xiocao.wanandroid.base.ArchBaseFragment
@@ -36,10 +36,10 @@ class ProjectFragment : ArchBaseFragment<ProjectViewModel>() {
         return R.layout.fragment_project
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val titles = LinkedList<String>()
-        val fragments = LinkedList<Fragment>()
+        val fragments = LinkedList<androidx.fragment.app.Fragment>()
         mViewModel.getError().observe(this, Observer<ErrorStatus> { error -> ToastUtils.showShortToast(mActivity, error?.message.toString()) })
         mViewModel.getTitle().observe(this, Observer<List<ProjectTitle>> { title ->
             title?.forEach { bean ->

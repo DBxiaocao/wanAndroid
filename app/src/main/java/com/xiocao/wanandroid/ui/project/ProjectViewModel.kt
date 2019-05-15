@@ -1,6 +1,6 @@
 package com.xiocao.wanandroid.ui.project
 
-import android.arch.lifecycle.LiveData
+import androidx.lifecycle.LiveData
 import com.xiocao.wanandroid.base.BaseViewModel
 
 /**

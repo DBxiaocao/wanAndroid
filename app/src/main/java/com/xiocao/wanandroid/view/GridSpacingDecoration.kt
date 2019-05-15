@@ -1,29 +1,29 @@
 package com.xiocao.wanandroid.view
 
 import android.graphics.Rect
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.StaggeredGridLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import android.view.View
 
 
-class GridSpacingDecoration(private val spacing: Int, private val includeEdge: Boolean) : RecyclerView.ItemDecoration() {
+class GridSpacingDecoration(private val spacing: Int, private val includeEdge: Boolean) : androidx.recyclerview.widget.RecyclerView.ItemDecoration() {
     private var spanCount: Int = 0
 
-    private fun getSpanCount(parent: RecyclerView): Int {
+    private fun getSpanCount(parent: androidx.recyclerview.widget.RecyclerView): Int {
         // 列数
         var spanCount = -1
         val layoutManager = parent.layoutManager
-        if (layoutManager is GridLayoutManager) {
+        if (layoutManager is androidx.recyclerview.widget.GridLayoutManager) {
             spanCount = layoutManager.spanCount
-        } else if (layoutManager is StaggeredGridLayoutManager) {
+        } else if (layoutManager is androidx.recyclerview.widget.StaggeredGridLayoutManager) {
             spanCount = layoutManager
                     .spanCount
         }
         return spanCount
     }
 
-    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State?) {
+    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
         if (spanCount == 0)
             spanCount = getSpanCount(parent)
         val position = parent.getChildAdapterPosition(view)

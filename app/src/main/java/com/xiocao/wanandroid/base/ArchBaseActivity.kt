@@ -1,6 +1,6 @@
 package com.xiocao.wanandroid.base
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 import android.os.Bundle
 
 /**

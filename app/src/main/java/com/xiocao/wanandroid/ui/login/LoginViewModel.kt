@@ -1,7 +1,7 @@
 package com.xiocao.wanandroid.ui.login
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import android.text.TextUtils
 import com.xiocao.wanandroid.base.BaseViewModel
 import com.xiocao.wanandroid.retrofit.ErrorStatus
